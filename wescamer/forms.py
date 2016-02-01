@@ -15,10 +15,10 @@ class StudentCreateForm(UserCreationForm):
         user.email = self.cleaned_data["email"]
         username = self.cleaned_data["email"].split("@wesleyan.edu")[0]
         user.username = username
-        user.student.username = username
 
         if commit:
             user.save()
+            user.student.username = username
             user.student.save()
 
         return user
