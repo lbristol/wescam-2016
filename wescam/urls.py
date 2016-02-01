@@ -19,10 +19,5 @@ import wescamer
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-]
-
-
-urlpatterns = [
-    url(r'^admin/', include(admin.site.urls)),
     url(r'^', include('wescamer.urls')),
 ]

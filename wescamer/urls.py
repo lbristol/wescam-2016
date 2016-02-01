@@ -5,5 +5,10 @@ from .views import *
 
 urlpatterns = [
     url(r'^$', index, name='index'),
+    url(r'^register', register_user, name='register'),
+    url(r'^dashboard', dashboard, name='dashboard'),
+    url(r'^logout', logout_user, name='logout'),
+    url('^', include('django.contrib.auth.urls'))
+
 
 ]

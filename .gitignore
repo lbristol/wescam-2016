@@ -1,3 +1,4 @@
 *.pyc
 wescam/settings.pyc
 wescam/urls.pyc
+.DS_Store
