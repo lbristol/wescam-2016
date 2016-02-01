@@ -1,0 +1,3 @@
+*.pyc
+wescam/settings.pyc
+wescam/urls.pyc
