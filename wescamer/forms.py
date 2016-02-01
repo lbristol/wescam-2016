@@ -18,6 +18,5 @@ class StudentCreateForm(UserCreationForm):
 
         if commit:
             user.save()
-            user.student.save()
 
         return user
