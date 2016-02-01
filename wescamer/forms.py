@@ -18,7 +18,6 @@ class StudentCreateForm(UserCreationForm):
 
         if commit:
             user.save()
-            user.student.username = username
             user.student.save()
 
         return user
