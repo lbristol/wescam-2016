@@ -38,9 +38,12 @@ def register_user(request):
         form = StudentCreateForm(request.POST)
         if form.is_valid():
             user = form.save()
-            Student.objects.create(user=user, email=form.cleaned_data['email'])
+            
+                #Register student
+
+            # Student.objects.create(user=user, email=form.cleaned_data['email'])
             return render(request, "registration/register_complete.html")
-        return "Error"
+        return HttpResponse("An error occurred signing up")
     else:
         form = StudentCreateForm()
 
@@ -77,7 +80,9 @@ def add_crush(request):
                 #A repeat
                 return redirect('dashboard')
             else: #A new crush
-                crush = Crush.objects.create(crusher=request.user, crushee=c, reciprocated=False, nickname = "hidden")
+                if request.user.year == 2016 or c.year == 2016:
+                    crush = Crush.objects.create(crusher=request.user, crushee=c, reciprocated=False, nickname = "hidden")
+
 
             return redirect('dashboard')
     print form

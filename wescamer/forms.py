@@ -10,16 +10,28 @@ class StudentCreateForm(UserCreationForm):
         model = User
         fields = ("email", "password1", "password2")
 
+
     def save(self, commit=True):
-        user = super(StudentCreateForm, self).save(commit=False)
-        user.email = self.cleaned_data["email"]
-        username = self.cleaned_data["email"].split("@wesleyan.edu")[0]
-        user.username = username
+        
+        email = self.cleaned_data['email'] #+ "@wesleyan.edu" 
 
-        if commit:
-            user.save()
+        if (Student.objects.filter(email=email, isRegistered=False).count() == 1):
+            user = super(StudentCreateForm, self).save(commit=False)
+            user.email = email
+            username = self.cleaned_data["email"].split("@wesleyan.edu")[0]
+            user.username = username
+            print email
+            student = Student.objects.get(email=email, isRegistered=False)
+            student.isRegistered = True
 
-        return user
+            if commit:
+                user.save()
+                student.user_id = user.id
+                print user.id
+
+                student.save()
+            return user
+        return
 
 class AddCrush(forms.Form):
     crush_username = forms.CharField(label="crush_username", max_length=100)
