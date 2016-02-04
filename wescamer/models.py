@@ -10,3 +10,4 @@ class Crush(models.Model):
     crusher = models.ForeignKey(User, related_name="crusher")
     crushee = models.ForeignKey(User, related_name="crushee")
     reciprocated = models.BooleanField()
+    nickname = models.CharField(max_length=40, blank=True,null=True)
