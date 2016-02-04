@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, logout, login, views
 from django.contrib.auth.forms import UserCreationForm
 from forms import *
 from django.http import HttpResponse
+from models import *
 
 def index(request):
     if request.user.is_authenticated():
@@ -45,4 +46,27 @@ def register_user(request):
         return render(request, 'registration/register.html',{'form':form})
 
 def dashboard(request):
-    return render(request, 'dashboard.html')
+    try:
+        received_crushes = Crush.objects.filter(crushee=request.user)
+    except Crush.DoesNotExist:
+        received_crushes = []
+    try:
+        sent_crushes = Crush.objects.filter(crusher=request.user)
+    except Crush.DoesNotExist:
+        sent_crushes = []
+    return render(request, 'dashboard.html', {'received_crushes':received_crushes, 'sent_crushes' :sent_crushes})
+
+def add_crush(request):
+    if request.method == 'POST':
+        form = AddCrush(request.POST)
+        if form.is_valid():
+            crush_username = form.cleaned_data['crush_username']
+            c = Student.objects.get(email=crush_username+"@wesleyan.edu").user
+            print c
+            # print username
+            crush = Crush.objects.create(crusher=request.user, crushee=c, reciprocated=False, nickname = "hidden")
+            #process crush
+            return HttpResponse("Added user " + crush_username)
+    print form
+    return HttpResponse("An error occurred adding crush")
+

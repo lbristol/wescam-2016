@@ -2,52 +2,28 @@
 
 {% block content %}
 
-<h2 align="center" id="dashheader">Dashboard for {{user.name}}</h2>
-<h3 align="center" id="currordersheader">Current Orders</h3>
+<h2 align="center" id="dashheader">Wescam</h2>
+<h3 align="center" id="currordersheader">Crushes</h3>
+<form action="/addCrush/" method="post">
+    {% csrf_token %}
+    <label for="crush_username">Username: </label>
+    <input id="crush_username" type="text" name="crush_username">
+    <input type="submit" value="Send">
+</form>
 <table align="center">
-<tr>
-    <th>Orderer</th>
-    <th>Restaurant</th>
-    <th>Total</th>
-    <th>Status</th>
-    <th>Action</th>
-</tr>
-{% for order in current_orders %}
+{% for crush in received_crushes %}
     <tr>
-        <td>{{order.buyer}}</td>
-        <td>{{order.restaurant}}</td>
-        <td>{{order.total}}</td>
-        <td>{{order.status}}</td>
-        {% if order.status == "Claimed" %}
-        <td><a href="markPickedUp/{{order.id}}">Mark Picked Up</a></td>
-        {% endif %}
-        {% if order.status == "Picked Up" %}
-        <td><a href="markDelivered/{{order.id}}">Mark Delivered</a></td>
-        {% endif %}
-        {% if order.status == "Delivered" %}
-        <td></td>
+        <td>{{crush.crusher}}</td>
+    </tr>
+{% endfor %}
+{% for crush in sent_crushes %}
+    <tr>
+        {% if crush.reciprocated %}
+        <td>{{crush.crushee}}</td>
+        {% else %}
+        <td>{{crush.nickname}}</td>
         {% endif %}
     </tr>
 {% endfor %}
 </table>
-<h3 align="center" id="openordersheader">Open Orders</h3>
-<table align="center">
-<tr>
-    <th>Orderer</th>
-    <th>Restaurant</th>
-    <th>Total</th>
-    <th>Claim</th>
-</tr>
-{% for order in open_orders %}
-    <tr>
-        <td>{{order.buyer}}</td>
-        <td>{{order.restaurant}}</td>
-        <td>{{order.total}}</td>
-        <td><a href="claimOrder/{{order.id}}">Claim</a></td>
-    </tr>
-{% endfor %}
-</table>
-<br>
-<br>
-<p align="center"> Hungry? Order something to eat <a href="browse">here</a>.</p>
 {% endblock %}
