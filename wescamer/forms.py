@@ -20,6 +20,3 @@ class StudentCreateForm(UserCreationForm):
             user.save()
 
         return user
-
-class AddCrush(forms.Form):
-    crush_username = forms.CharField(label="crush_username", max_length=100)
