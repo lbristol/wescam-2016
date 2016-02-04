@@ -13,15 +13,19 @@
 <table align="center">
 {% for crush in received_crushes %}
     <tr>
-        <td>{{crush.crusher}}</td>
+        {% if crush.reciprocated %}
+        <td>{{crush.crushee}} (Reciprocated)</td>
+        {% else %}
+        <td>{{crush.nickname}}</td>
+        {% endif %}
     </tr>
 {% endfor %}
 {% for crush in sent_crushes %}
     <tr>
         {% if crush.reciprocated %}
-        <td>{{crush.crushee}}</td>
+        <td>{{crush.crushee}} (Reciprocated)</td>
         {% else %}
-        <td>{{crush.nickname}}</td>
+        <td>{{crush.crushee}}</td>
         {% endif %}
     </tr>
 {% endfor %}

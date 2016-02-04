@@ -64,8 +64,14 @@ def add_crush(request):
             c = Student.objects.get(email=crush_username+"@wesleyan.edu").user
             print c
             # print username
-            crush = Crush.objects.create(crusher=request.user, crushee=c, reciprocated=False, nickname = "hidden")
-            #process crush
+            # cr = Crush.objects.filter(crusher=c, crushee=request.user)
+            if Crush.objects.filter(crusher=c, crushee=request.user).count() > 0: #A reciprocating crush
+                cr = Crush.objects.get(crusher=c, crushee=request.user)
+                cr.reciprocated=True
+                cr.save()
+            else: #A new crush
+                crush = Crush.objects.create(crusher=request.user, crushee=c, reciprocated=False, nickname = "hidden")
+
             return HttpResponse("Added user " + crush_username)
     print form
     return HttpResponse("An error occurred adding crush")
