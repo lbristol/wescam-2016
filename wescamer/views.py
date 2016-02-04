@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, logout, login, views
 from django.contrib.auth.forms import UserCreationForm
 from forms import *
 from django.http import HttpResponse
+from django.shortcuts import redirect
 from models import *
 
 def index(request):
@@ -65,14 +66,20 @@ def add_crush(request):
             print c
             # print username
             # cr = Crush.objects.filter(crusher=c, crushee=request.user)
-            if Crush.objects.filter(crusher=c, crushee=request.user).count() > 0: #A reciprocating crush
+            if c==request.user:
+                #adding yourself
+                return redirect('dashboard')
+            elif Crush.objects.filter(crusher=c, crushee=request.user).count() > 0: #A reciprocating crush
                 cr = Crush.objects.get(crusher=c, crushee=request.user)
                 cr.reciprocated=True
                 cr.save()
+            elif Crush.objects.filter(crusher=request.user, crushee=c).count() > 0:
+                #A repeat
+                return redirect('dashboard')
             else: #A new crush
                 crush = Crush.objects.create(crusher=request.user, crushee=c, reciprocated=False, nickname = "hidden")
 
-            return HttpResponse("Added user " + crush_username)
+            return redirect('dashboard')
     print form
     return HttpResponse("An error occurred adding crush")
 
